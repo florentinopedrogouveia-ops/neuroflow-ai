@@ -1,5 +1,5 @@
-// 1. Reveal Observer
-const revealObserver = new IntersectionObserver((entries) => {
+// 1. Core Intersection Observer
+const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('active');
@@ -8,44 +8,10 @@ const revealObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.1 });
 
 document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
-    revealObserver.observe(el);
+    observer.observe(el);
 });
 
-// 2. 3D Tilt (Only Desktop)
-if (window.innerWidth > 1024) {
-    document.querySelectorAll('.tilt-card').forEach(card => {
-        card.addEventListener('mousemove', (e) => {
-            const rect = card.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            const rotateX = (y - centerY) / 15;
-            const rotateY = (centerX - x) / 15;
-            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
-        });
-        card.addEventListener('mouseleave', () => {
-            card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
-        });
-    });
-}
-
-// 3. Magnetic Buttons (Only Desktop)
-if (window.innerWidth > 1024) {
-    document.querySelectorAll('.magnetic').forEach(btn => {
-        btn.addEventListener('mousemove', (e) => {
-            const rect = btn.getBoundingClientRect();
-            const x = e.clientX - rect.left - rect.width / 2;
-            const y = e.clientY - rect.top - rect.height / 2;
-            btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
-        });
-        btn.addEventListener('mouseleave', () => {
-            btn.style.transform = `translate(0px, 0px)`;
-        });
-    });
-}
-
-// 4. Parallax Text (Only Desktop)
+// 2. Parallax (Only Desktop)
 window.addEventListener('scroll', () => {
     if (window.innerWidth > 1024) {
         const scroll = window.pageYOffset;
@@ -54,52 +20,64 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// 5. Counters
-const statsObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            const target = entry.target;
-            const countTo = parseInt(target.textContent.replace(/[^0-9]/g, ''));
-            let current = 0;
-            const duration = 2000;
-            const startTime = performance.now();
-            
-            const animate = (now) => {
-                const elapsed = now - startTime;
-                const progress = Math.min(elapsed / duration, 1);
-                current = Math.floor(progress * countTo);
-                
-                const prefix = target.textContent.includes('+') ? '+' : (target.textContent.includes('-') ? '-' : '');
-                const suffix = target.textContent.includes('%') ? '%' : '';
-                target.textContent = prefix + current + suffix;
-                
-                if (progress < 1) requestAnimationFrame(animate);
-            };
-            requestAnimationFrame(animate);
-            statsObserver.unobserve(target);
-        }
-    });
-}, { threshold: 0.5 });
-
-document.querySelectorAll('.stat').forEach(stat => statsObserver.observe(stat));
-
-// 6. Text Reveal (Robust)
+// 3. Text Reveal Logic (Safely handled)
 document.querySelectorAll('.reveal-text span').forEach(span => {
     const text = span.textContent;
+    if (!text.trim()) return;
+    
     span.textContent = '';
     const inner = document.createElement('div');
     inner.textContent = text;
-    inner.style.transform = 'translateY(105%)';
-    inner.style.transition = 'transform 1.2s cubic-bezier(0.23, 1, 0.32, 1)';
+    inner.style.transform = 'translateY(110%)';
+    inner.style.transition = 'transform 1s cubic-bezier(0.23, 1, 0.32, 1)';
     span.appendChild(inner);
     
     const tObs = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting) {
             setTimeout(() => inner.style.transform = 'translateY(0)', 100);
+            tObs.unobserve(span);
         }
     }, { threshold: 0.1 });
     tObs.observe(span);
 });
+
+// 4. Particles (Simplified)
+const canvas = document.createElement('canvas');
+canvas.style.position = 'fixed';
+canvas.style.top = '0';
+canvas.style.left = '0';
+canvas.style.zIndex = '-1';
+canvas.style.pointerEvents = 'none';
+document.body.appendChild(canvas);
+const ctx = canvas.getContext('2d');
+
+function resize() {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resize);
+resize();
+
+let particles = [];
+for(let i=0; i<50; i++) {
+    particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        v: Math.random() * 0.5
+    });
+}
+
+function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+    particles.forEach(p => {
+        p.y -= p.v;
+        if (p.y < 0) p.y = canvas.height;
+        ctx.fillRect(p.x, p.y, 1, 1);
+    });
+    requestAnimationFrame(animate);
+}
+animate();
 
 // Initialize Lucide
 lucide.createIcons();
