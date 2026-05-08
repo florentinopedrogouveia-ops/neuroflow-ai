@@ -72,8 +72,14 @@ body {
 .subheadline { font-size: 1.25rem; max-width: 700px; margin-bottom: 4rem; color: #888; line-height: 1.6; }
 .highlight { color: var(--accent); }
 
-/* REVEAL TEXT MASK */
-.reveal-text span { display: block; overflow: hidden; height: 1.1em; }
+/* REVEAL TEXT MASK: FIXED */
+.reveal-text span {
+    display: block;
+    overflow: hidden;
+    height: 1.25em; /* Aumentado para não cortar as letras */
+    line-height: 1.1;
+    margin-bottom: 0.1em;
+}
 
 /* BUTTONS */
 .hero-actions { display: flex; gap: 2rem; }
