@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroFlow AI | Automação de Vendas com IA no WhatsApp</title>
+    <meta name="description" content="Automatize seu atendimento e vendas no WhatsApp com IA treinada. Converta leads 24/7 com a NeuroFlow AI.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+    <!-- Background Layers -->
+    <div class="bg-glow"></div>
+    <div class="bg-grid"></div>
+    <canvas id="particle-canvas"></canvas>
+
+    <nav class="navbar">
+        <div class="container nav-content">
+            <div class="logo">
+                <div class="logo-icon"></div>
+                <span>NeuroFlow <span class="text-gradient">AI</span></span>
+            </div>
+            <div class="nav-links desktop-only">
+                <a href="#solucao">Solução</a>
+                <a href="#demo">Demonstração</a>
+                <a href="#precos">Preços</a>
+            </div>
+            <div class="nav-actions">
+                <a href="#" class="btn-text desktop-only">Login</a>
+                <a href="#" class="btn-primary">Testar Grátis</a>
+            </div>
+            <button class="mobile-menu-toggle" id="menuToggle">
+                <span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <main>
+        <!-- HERO SECTION -->
+        <section class="hero section-padding">
+            <div class="container text-center">
+                <div class="badge fade-in">
+                    <span class="pulse"></span>
+                    O futuro das vendas chegou
+                </div>
+                <h1 class="hero-title fade-up">
+                    Sua empresa ainda responde <br>
+                    <span class="text-gradient">leads manualmente?</span>
+                </h1>
+                <p class="hero-subtitle fade-up-delay">
+                    Automatize atendimento, vendas e follow-ups com IA treinada para converter 24/7. Transforme seu WhatsApp em uma máquina de lucro.
+                </p>
+                <div class="hero-btns fade-up-delay-2">
+                    <a href="#" class="btn-primary btn-lg">Testar Gratuitamente</a>
+                    <a href="#" class="btn-secondary btn-lg">Ver Demonstração</a>
+                </div>
+                
+                <div class="hero-mockup-container fade-up-delay-3">
+                    <div class="mockup-glow"></div>
+                    <div class="mockup-frame">
+                        <img id="hero-mockup" src="https://images.unsplash.com/photo-1551288049-bbbda5366391?auto=format&fit=crop&q=80&w=2070" alt="NeuroFlow Dashboard" class="img-fluid">
+                        <div class="mockup-overlay"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TRUSTED BY -->
+        <section class="logos-section">
+            <div class="container">
+                <p class="section-tag">Trusted by innovative teams</p>
+                <div class="logo-track">
+                    <div class="logo-item">ZEIT</div>
+                    <div class="logo-item">LINEAR</div>
+                    <div class="logo-item">RAYCAST</div>
+                    <div class="logo-item">STRIPE</div>
+                    <div class="logo-item">VERCEL</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROBLEMS -->
+        <section class="problems section-padding" id="problemas">
+            <div class="container">
+                <h2 class="section-title text-center">O custo da <span class="text-gradient">lentidão</span></h2>
+                <div class="problem-grid">
+                    <div class="problem-card">
+                        <i data-lucide="clock" class="icon-cyan"></i>
+                        <h3>Atendimento Lento</h3>
+                        <p>Leads esfriam em minutos. Se você demora para responder, a venda vai para o concorrente.</p>
+                    </div>
+                    <div class="problem-card">
+                        <i data-lucide="users-2" class="icon-purple"></i>
+                        <h3>Equipe Sobrecarregada</h3>
+                        <p>Sua equipe perde tempo com dúvidas repetitivas em vez de focar no fechamento.</p>
+                    </div>
+                    <div class="problem-card">
+                        <i data-lucide="trending-down" class="icon-cyan"></i>
+                        <h3>Baixa Conversão</h3>
+                        <p>Sem um follow-up consistente, 70% das oportunidades são perdidas no limbo.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!-- SOLUTION -->
+        <section class="solution section-padding" id="solucao">
+            <div class="container">
+                <p class="section-tag">A Plataforma Definitiva</p>
+                <h2 class="section-title text-center">Tudo o que você precisa para <span class="text-gradient">escalar</span></h2>
+                <div class="solution-grid">
+                    <div class="solution-card">
+                        <i data-lucide="brain-circuit" class="icon-cyan"></i>
+                        <h3>IA Treinável</h3>
+                        <p>A IA aprende sobre seu produto, tom de voz e objeções frequentes em minutos.</p>
+                    </div>
+                    <div class="solution-card">
+                        <i data-lucide="message-square" class="icon-purple"></i>
+                        <h3>Automação WhatsApp</h3>
+                        <p>Conexão oficial via API. Estabilidade total e zero risco de banimento.</p>
+                    </div>
+                    <div class="solution-card">
+                        <i data-lucide="database" class="icon-cyan"></i>
+                        <h3>CRM Integrado</h3>
+                        <p>Gerencie todos os seus leads e estágios de funil em um único dashboard.</p>
+                    </div>
+                    <div class="solution-card">
+                        <i data-lucide="repeat" class="icon-purple"></i>
+                        <h3>Follow-up Automático</h3>
+                        <p>Ninguém fica sem resposta. A IA retoma contatos parados para fechar a venda.</p>
+                    </div>
+                    <div class="solution-card">
+                        <i data-lucide="bar-chart-3" class="icon-cyan"></i>
+                        <h3>Analytics Avançado</h3>
+                        <p>Métricas de conversão, tempo de resposta e ROI em tempo real.</p>
+                    </div>
+                    <div class="solution-card">
+                        <i data-lucide="zap" class="icon-purple"></i>
+                        <h3>Escalabilidade Infinita</h3>
+                        <p>Atenda 10 ou 10.000 pessoas simultaneamente sem perder a qualidade.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRODUCT DEMO -->
+        <section class="demo-section section-padding" id="demo">
+            <div class="container">
+                <div class="demo-wrapper">
+                    <div class="demo-info">
+                        <h2 class="section-title">Veja a magia <br> <span class="text-gradient">acontecendo.</span></h2>
+                        <p>Nossa interface foi desenhada para quem busca controle total com esforço zero.</p>
+                        <ul class="demo-list">
+                            <li><i data-lucide="check-circle-2"></i> Mensagens em tempo real</li>
+                            <li><i data-lucide="check-circle-2"></i> Gráficos preditivos</li>
+                            <li><i data-lucide="check-circle-2"></i> Pipelines automatizados</li>
+                        </ul>
+                    </div>
+                    <div class="demo-visual">
+                        <div class="visual-container">
+                            <div class="visual-header">
+                                <div class="dots"><span></span><span></span><span></span></div>
+                                <div class="address-bar">neuroflow.ai/dashboard</div>
+                            </div>
+                            <div class="visual-content">
+                                <div class="chat-preview">
+                                    <div class="chat-bubble bot">"Olá! Vi que você se interessou..."</div>
+                                    <div class="chat-bubble user">"Tenho dúvidas..."</div>
+                                    <div class="chat-bubble bot ai-thinking">IA pensando... <span></span></div>
+                                </div>
+                                <div class="stats-preview">
+                                    <div class="stat-bar" style="height: 60%"></div>
+                                    <div class="stat-bar" style="height: 80%"></div>
+                                    <div class="stat-bar" style="height: 40%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- RESULTS -->
+        <section class="results-section">
+            <div class="container">
+                <div class="results-grid">
+                    <div class="result-item">
+                        <span class="result-num">+312%</span>
+                        <p>Conversão</p>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-num">-68%</span>
+                        <p>Custo</p>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-num">24/7</span>
+                        <p>Atendimento</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HOW IT WORKS -->
+        <section class="how-it-works section-padding">
+            <div class="container">
+                <h2 class="section-title text-center">Do zero ao lucro em <span class="text-gradient">4 passos</span></h2>
+                <div class="timeline">
+                    <div class="step">
+                        <div class="step-num">01</div>
+                        <h3>Conecte</h3>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">02</div>
+                        <h3>Treine</h3>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">03</div>
+                        <h3>Automatize</h3>
+                    </div>
+                    <div class="step">
+                        <div class="step-num">04</div>
+                        <h3>Escale</h3>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- PRICING -->
+        <section class="pricing section-padding" id="precos">
+            <div class="container">
+                <h2 class="section-title text-center">Planos</h2>
+                <div class="pricing-grid">
+                    <div class="price-card">
+                        <h3>Starter</h3>
+                        <div class="price">R$ 297</div>
+                        <a href="#" class="btn-secondary">Assinar</a>
+                    </div>
+                    <div class="price-card featured">
+                        <div class="popular-tag">Popular</div>
+                        <h3>Growth</h3>
+                        <div class="price">R$ 597</div>
+                        <a href="#" class="btn-primary">Assinar</a>
+                    </div>
+                    <div class="price-card">
+                        <h3>Enterprise</h3>
+                        <div class="price">Consultar</div>
+                        <a href="#" class="btn-secondary">Falar com Consultor</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FINAL CTA -->
+        <section class="final-cta section-padding">
+            <div class="container text-center">
+                <h2 class="hero-title">Pare de perder vendas <br><span class="text-gradient">enquanto dorme.</span></h2>
+                <a href="#" class="btn-primary btn-lg">Começar Agora</a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer container">
+        <p>&copy; 2026 NeuroFlow AI.</p>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+      lucide.createIcons();
+    </script>
+</body>
+</html>
