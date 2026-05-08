@@ -1,9 +1,29 @@
-// Flat & Sharp Particle Grid
+// Scroll Reveal Logic
+const observerOptions = {
+    threshold: 0.15,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('active');
+            // Opcional: parar de observar após animar
+            // observer.unobserve(entry.target);
+        }
+    });
+}, observerOptions);
+
+document.querySelectorAll('.reveal').forEach(el => {
+    observer.observe(el);
+});
+
+// Particle Grid: Ultra-Sharp & Subtle
 const canvas = document.getElementById('particle-canvas');
 const ctx = canvas.getContext('2d');
 
 let particles = [];
-const particleCount = 100;
+const particleCount = 120;
 
 function resize() {
     canvas.width = window.innerWidth;
@@ -21,9 +41,8 @@ class Particle {
     reset() {
         this.x = Math.floor(Math.random() * canvas.width);
         this.y = Math.floor(Math.random() * canvas.height);
-        this.size = 1; // Sharp 1px dot
-        this.opacity = Math.random() * 0.5;
-        this.speed = Math.random() * 0.2;
+        this.opacity = Math.random() * 0.4;
+        this.speed = Math.random() * 0.15;
     }
 
     update() {
@@ -33,7 +52,7 @@ class Particle {
 
     draw() {
         ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-        ctx.fillRect(this.x, this.y, this.size, this.size); // Square for sharpness
+        ctx.fillRect(this.x, this.y, 1, 1);
     }
 }
 
@@ -51,19 +70,6 @@ function animate() {
 }
 
 animate();
-
-// Snappy Intersection Observer
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('active');
-        }
-    });
-}, { threshold: 0.1 });
-
-document.querySelectorAll('section').forEach(section => {
-    observer.observe(section);
-});
 
 // Lucide icons initialization
 lucide.createIcons();
