@@ -1,9 +1,9 @@
-// Particle Canvas Logic
+// Particle Canvas: Ultra-subtle background
 const canvas = document.getElementById('particle-canvas');
 const ctx = canvas.getContext('2d');
 
 let particles = [];
-const particleCount = 60;
+const particleCount = 40;
 
 function resize() {
     canvas.width = window.innerWidth;
@@ -21,45 +21,36 @@ class Particle {
     reset() {
         this.x = Math.random() * canvas.width;
         this.y = Math.random() * canvas.height;
-        this.vx = (Math.random() - 0.5) * 0.5;
-        this.vy = (Math.random() - 0.5) * 0.5;
-        this.size = Math.random() * 2;
-        this.alpha = Math.random() * 0.5;
+        this.vx = (Math.random() - 0.5) * 0.2;
+        this.vy = (Math.random() - 0.5) * 0.2;
+        this.size = Math.random() * 1.5;
+        this.alpha = Math.random() * 0.15;
     }
 
     update() {
         this.x += this.vx;
         this.y += this.vy;
-
-        if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
-            this.reset();
-        }
+        if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
     }
 
     draw() {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0, 242, 255, ${this.alpha})`;
+        ctx.fillStyle = `rgba(255, 255, 255, ${this.alpha})`;
         ctx.fill();
     }
 }
 
-for (let i = 0; i < particleCount; i++) {
-    particles.push(new Particle());
-}
+for (let i = 0; i < particleCount; i++) particles.push(new Particle());
 
 function animate() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => {
-        p.update();
-        p.draw();
-    });
+    particles.forEach(p => { p.update(); p.draw(); });
     requestAnimationFrame(animate);
 }
-
 animate();
 
-// Navbar Scroll Effect
+// Navbar Scroll logic
 const navbar = document.querySelector('.navbar');
 window.addEventListener('scroll', () => {
     if (window.scrollY > 50) {
@@ -69,11 +60,8 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Simple Scroll Reveal Animation
-const observerOptions = {
-    threshold: 0.1
-};
-
+// Minimal Intersection Observer for reveal animations
+const observerOptions = { threshold: 0.1 };
 const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
@@ -83,21 +71,17 @@ const observer = new IntersectionObserver((entries) => {
     });
 }, observerOptions);
 
-document.querySelectorAll('.problem-card, .section-title').forEach(el => {
-    el.style.opacity = '0';
+document.querySelectorAll('section, .solution-card, .price-card').forEach(el => {
     observer.observe(el);
 });
 
-// AI Thinking Animation
-const thinkingBubble = document.querySelector('.ai-thinking span');
-if (thinkingBubble) {
-    let dots = '';
-    setInterval(() => {
-        dots = dots.length < 3 ? dots + '.' : '';
-        thinkingBubble.textContent = dots;
-    }, 500);
-}
+// Mobile menu toggle
 const menuToggle = document.getElementById('menuToggle');
-menuToggle.addEventListener('click', () => {
-    alert('Menu mobile em desenvolvimento - Foco inicial no layout');
-});
+if (menuToggle) {
+    menuToggle.addEventListener('click', () => {
+        document.querySelector('.nav-links').classList.toggle('active');
+    });
+}
+
+// Lucide icon initialization
+lucide.createIcons();
