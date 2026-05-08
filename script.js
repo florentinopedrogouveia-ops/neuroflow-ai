@@ -1,110 +1,150 @@
-// 1. Advanced Scroll Reveal & Staggering
-const observerOptions = {
-    threshold: 0.1,
-    rootMargin: '0px 0px -100px 0px'
-};
-
-const observer = new IntersectionObserver((entries) => {
+// 1. Core Intersection Observer for Reveals
+const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('active');
         }
     });
-}, observerOptions);
+}, { threshold: 0.1 });
 
 document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .reveal-scale').forEach(el => {
-    observer.observe(el);
+    revealObserver.observe(el);
 });
 
-// 2. Scroll Progress Bar
-window.addEventListener('scroll', () => {
-    const scrollBar = document.querySelector('.scroll-progress');
-    const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-    if (scrollBar) scrollBar.style.width = scrollPercent + '%';
-});
-
-// 3. Incredible "Skew on Scroll" Effect
-let currentScroll = window.pageYOffset;
-let skew = 0;
-let maxSkew = 15; // Max degrees
-
-function smoothSkew() {
-    let newScroll = window.pageYOffset;
-    let diff = newScroll - currentScroll;
-    currentScroll = newScroll;
-
-    // Calculate skew based on scroll velocity
-    skew = diff * 0.1; 
-    if (skew > maxSkew) skew = maxSkew;
-    if (skew < -maxSkew) skew = -maxSkew;
-
-    // Apply skew to all major sections
-    document.querySelectorAll('section').forEach(section => {
-        section.style.transform = `skewY(${skew * 0.2}deg)`;
-        section.style.transition = 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)';
+// 2. 3D Tilt Effect for Cards
+document.querySelectorAll('.tilt-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const rotateX = (y - centerY) / 10;
+        const rotateY = (centerX - x) / 10;
+        
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
     });
+    
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)`;
+    });
+});
 
-    requestAnimationFrame(smoothSkew);
-}
-smoothSkew();
+// 3. Magnetic Button Effect
+document.querySelectorAll('.magnetic').forEach(btn => {
+    btn.addEventListener('mousemove', (e) => {
+        const rect = btn.getBoundingClientRect();
+        const x = e.clientX - rect.left - rect.width / 2;
+        const y = e.clientY - rect.top - rect.height / 2;
+        
+        btn.style.transform = `translate(${x * 0.3}px, ${y * 0.3}px)`;
+    });
+    
+    btn.addEventListener('mouseleave', () => {
+        btn.style.transform = `translate(0px, 0px)`;
+    });
+});
 
-// 4. Text Reveal Helper: Wrap lines in spans
+// 4. Advanced Parallax Background
+window.addEventListener('scroll', () => {
+    const scroll = window.pageYOffset;
+    const parallaxText = document.querySelector('.parallax-bg-text');
+    if (parallaxText) {
+        parallaxText.style.transform = `translate(-50%, calc(-50% + ${scroll * 0.15}px))`;
+    }
+    
+    // Scroll Progress
+    const progress = document.querySelector('.scroll-progress');
+    const totalHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (progress) progress.style.width = (scroll / totalHeight) * 100 + '%';
+});
+
+// 5. Animated Number Counters
+const statsObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            const target = entry.target;
+            const countTo = parseInt(target.getAttribute('data-target'));
+            let current = 0;
+            const duration = 2000;
+            const step = countTo / (duration / 16);
+            
+            const counter = setInterval(() => {
+                current += step;
+                if (current >= countTo) {
+                    target.textContent = (target.textContent.includes('+') ? '+' : (target.textContent.includes('-') ? '-' : '')) + countTo + (target.textContent.includes('%') ? '%' : '');
+                    clearInterval(counter);
+                } else {
+                    target.textContent = (target.textContent.includes('+') ? '+' : (target.textContent.includes('-') ? '-' : '')) + Math.floor(current) + (target.textContent.includes('%') ? '%' : '');
+                }
+            }, 16);
+            statsObserver.unobserve(target);
+        }
+    });
+}, { threshold: 0.5 });
+
+document.querySelectorAll('.stat').forEach(stat => {
+    if (stat.getAttribute('data-target')) statsObserver.observe(stat);
+});
+
+// 6. Text Reveal Refinement
 document.querySelectorAll('.reveal-text span').forEach(span => {
     const text = span.textContent;
     span.textContent = '';
     const inner = document.createElement('div');
     inner.textContent = text;
-    inner.style.transition = 'transform 1.2s cubic-bezier(0.16, 1, 0.3, 1)';
     inner.style.transform = 'translateY(100%)';
+    inner.style.transition = 'transform 1.5s cubic-bezier(0.23, 1, 0.32, 1)';
     span.appendChild(inner);
     
-    // Add to observer
-    const textObserver = new IntersectionObserver((entries) => {
+    const textObs = new IntersectionObserver((entries) => {
         if (entries[0].isIntersecting) {
             inner.style.transform = 'translateY(0)';
-            textObserver.unobserve(span);
         }
-    }, { threshold: 1 });
-    textObserver.observe(span);
+    }, { threshold: 0.1 });
+    textObs.observe(span);
 });
 
-// 5. Particle Grid: Minimal & Dynamic
-const canvas = document.getElementById('particle-canvas');
+// 7. Dynamic Particle Grid (Refined)
+const canvas = document.createElement('canvas');
+canvas.id = 'particle-canvas';
+document.body.prepend(canvas);
 const ctx = canvas.getContext('2d');
-let particles = [];
 
-function resize() {
+function initCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
+    canvas.style.position = 'fixed';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.zIndex = '-2';
+    canvas.style.pointerEvents = 'none';
 }
-window.addEventListener('resize', resize);
-resize();
+window.addEventListener('resize', initCanvas);
+initCanvas();
 
-class Particle {
-    constructor() { this.reset(); }
-    reset() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.opacity = Math.random() * 0.3;
-        this.vy = -(Math.random() * 0.2 + 0.1);
-    }
-    update() {
-        this.y += this.vy;
-        if (this.y < 0) this.reset();
-    }
-    draw() {
-        ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
-        ctx.fillRect(this.x, this.y, 1, 1);
-    }
+let dots = [];
+for (let i = 0; i < 80; i++) {
+    dots.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        v: Math.random() * 0.5 + 0.1
+    });
 }
-for (let i = 0; i < 150; i++) particles.push(new Particle());
 
-function animate() {
+function draw() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    particles.forEach(p => { p.update(); p.draw(); });
-    requestAnimationFrame(animate);
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+    dots.forEach(dot => {
+        dot.y -= dot.v;
+        if (dot.y < 0) dot.y = canvas.height;
+        ctx.fillRect(dot.x, dot.y, 1, 1);
+    });
+    requestAnimationFrame(draw);
 }
-animate();
+draw();
 
 // Initialize Lucide
 lucide.createIcons();
